@@ -3,6 +3,7 @@
 #include <ArduinoOTA.h>
 #include "config.h"
 #include "http_server.h"
+#include "clock.h"
 
 
 void wifi_setup()
@@ -68,7 +69,7 @@ void eeprom_setup()
 //     uint8_t cookie = EEPROM.read(EEPROM_ADDR_MAGIC);
 //     if (cookie != EEPROM_MAGIC_COOKIE) {
 //         // format eeprom with defaults
-        
+
 //     }
 }
 
@@ -81,15 +82,17 @@ void setup()
     ota_setup();
 
     eeprom_setup();
+    clock_setup();
     httpd_setup();
     Serial.println("setup complete");
 
-    tone(SPEAKER_PIN, 110, 1800);
+    // tone(SPEAKER_PIN, 110, 1800);
 }
 
 
 void loop() 
 {
+    clock_loop();
     httpd_loop();
     ota_loop();
 }

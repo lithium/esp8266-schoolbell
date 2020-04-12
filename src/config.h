@@ -10,6 +10,10 @@
 
 #define SPEAKER_PIN D5
 
+#define CONFIG_NTP_SERVER "pool.ntp.org"
+#define CONFIG_NTP_UTC_OFFSET_SECONDS -8*60*60
+#define CONFIG_NTP_UPDATE_INTERVAL 60000
+
 #include "config_local.h"
 
 
