@@ -1,0 +1,4 @@
+.pio
+
+config_local.h
+node_modules
