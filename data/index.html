@@ -1,6 +1,9 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
   <style>
   </style>
@@ -16,5 +19,120 @@
 </head>
 <body>
     <p>Hello Schoolbell</p>
+
+    <div id="settings-form" style="display: none">
+      <fieldset>
+        <div class="formfield">
+          <label for="start0">Period1</label>
+          <input type="time" id="start0">
+          <input type="time" id="end0">
+        </div>
+        <div class="formfield">
+          <label for="start1">Period2</label>
+          <input type="time" id="start1">
+          <input type="time" id="end1">
+        </div>
+        <div class="formfield">
+          <label for="start2">Period3</label>
+          <input type="time" id="start2">
+          <input type="time" id="end2">
+        </div>
+        <div class="formfield">
+          <label for="start3">Period4</label>
+          <input type="time" id="start3">
+          <input type="time" id="end3">
+        </div>
+        <div class="formfield">
+          <label for="start4">Period5</label>
+          <input type="time" id="start4">
+          <input type="time" id="end4">
+        </div>
+        <div class="formfield">
+          <label for="start5">Period6</label>
+          <input type="time" id="start5">
+          <input type="time" id="end5">
+        </div>
+      </fieldset>
+      <fieldset>
+        <div class="formfield">
+          <label for="bellFrequency">Bell Fequency</label>
+          <input type="number" id="bellFrequency">
+        </div>
+        <div class="formfield">
+          <label for="bellDurationMs">Bell Duration (ms)</label>
+          <input type="number" id="bellDurationMs">
+        </div>
+      </fieldset> 
+      <fieldset>
+        <div class="formfield">
+          <label for="gmtOffsetHours">GMT Offset (hours)</label>
+          <input type="number" id="gmtOffsetHours">
+        </div>
+        <div class="formfield">
+          <label for="ntpIntervalMs">NTP Update Interval (ms)</label>
+          <input type="number" id="ntpIntervalMs">
+        </div>
+      </fieldset> 
+
+      <input type="submit" value="Save" id="submit">
+    </div>
+
+
+    <script type="text/javascript">
+
+      function offsetToTime(ofs) {
+        var hours = Math.floor(ofs / 60).toString().padStart(2, '0')
+        var mins = (ofs % 60).toString().padStart(2, '0')
+        return `${hours}:${mins}`
+      }
+      function timeToOffset(t) {
+        var p = t.split(":")
+        return Number(p[0])*60 + Number(p[1])
+      }
+
+      function updateSettings(settings) {
+          $.each(settings, (key, val) => {
+            $(`#${key}`).val(val)
+          })
+
+          for (var i=0; i < 6; i++) {
+            $(`#start${i}`).val(offsetToTime(settings.bellSchedule[i][0]))
+            $(`#end${i}`).val(offsetToTime(settings.bellSchedule[i][1]))
+          } 
+      }
+
+      function saveSettings() {
+        var schedule = [];
+        for (var i=0; i < 6; i++) {
+          schedule[i] = [
+            timeToOffset($(`#start${i}`).val()), 
+            timeToOffset($(`#end${i}`).val())
+          ];
+        }
+        var data = {
+          'bellFrequency': $('#bellFrequency').val(),
+          'bellDurationMs': $('#bellDurationMs').val(),
+          'gmtOffsetHours': $('#gmtOffsetHours').val(),
+          'ntpIntervalMs': $('#ntpIntervalMs').val(),
+          'bellSchedule': schedule
+        } 
+        var url = `${window.APP_CONFIG.api.baseUrl}/config`
+        $.post(url, JSON.stringify(data))
+      }
+
+
+      $(document).ready(() => {
+        var url = `${window.APP_CONFIG.api.baseUrl}/config`
+        $.getJSON(url).then((settings) => {
+          updateSettings(settings);
+          $('#settings-form').show()
+        })
+
+        $('#submit').click(() => {
+          saveSettings();
+        })
+      })
+      
+    </script>
 </body>
 </html>

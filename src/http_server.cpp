@@ -6,10 +6,12 @@ ESP8266WebServer httpd;
 
 
 void handleGetConfig() {
+    httpd.sendHeader("Access-Control-Allow-Origin", "*");
+
 	BellSettings &settings = BellSettings::active();
 	StaticJsonDocument<512> doc;
 
-    JsonArray schedule = doc.createNestedArray("schedule");
+    JsonArray schedule = doc.createNestedArray("bellSchedule");
     for (int i=0; i < NUM_PERIODS; i++) {
     	JsonArray row = schedule.createNestedArray();
     	row.add(settings.bellSchedule[i].start);
@@ -27,6 +29,8 @@ void handleGetConfig() {
 }
 
 void handlePostConfig() {
+    httpd.sendHeader("Access-Control-Allow-Origin", "*");
+
 	StaticJsonDocument<512> doc;
 	String body = httpd.arg("plain");
 	deserializeJson(doc, body);
