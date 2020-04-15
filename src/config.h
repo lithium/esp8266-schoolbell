@@ -9,6 +9,7 @@
 
 
 #define SPEAKER_PIN D5
+#define LED_PIN D0
 
 
 #define CONFIG_NTP_SERVER "pool.ntp.org"

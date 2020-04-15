@@ -1,19 +1,17 @@
 #include "audio.h"
 
-#include <SD.h>
-#include <ESP8266HTTPClient.h>
-#include "AudioFileSourceSPIFFS.h"
-#include "AudioOutputI2SNoDAC.h"
-#include "AudioGeneratorWAV.h"
 
 
 static AudioFileSourceSPIFFS *source = NULL;
 static AudioOutputI2SNoDAC *out = NULL;
 static AudioGeneratorWAV *decoder = NULL;
 
+
 void audio_setup()
 {
 	out = new AudioOutputI2SNoDAC();
+	digitalWrite(LED_PIN, LOW);
+	pinMode(LED_PIN, OUTPUT);
 }
 
 void audio_ring()
@@ -21,6 +19,7 @@ void audio_ring()
 	source = new AudioFileSourceSPIFFS("/bell.wav");
 	decoder = new AudioGeneratorWAV();
 	decoder->begin(source, out);
+	digitalWrite(LED_PIN, LOW);
 }
 
 void audio_loop()
@@ -33,6 +32,7 @@ void audio_loop()
 			delete decoder;
 			source = NULL;
 			decoder = NULL;
+			digitalWrite(LED_PIN, HIGH);
 		}
 	}
 }
