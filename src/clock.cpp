@@ -1,5 +1,6 @@
 #include "clock.h"
 #include "settings.h"
+#include "audio.h"
 
 static WiFiUDP ntpUdp;
 static NTPClient ntpClient(ntpUdp, CONFIG_NTP_SERVER, CONFIG_NTP_UTC_OFFSET_SECONDS, CONFIG_NTP_UPDATE_INTERVAL);
@@ -27,9 +28,11 @@ void ring_bell(int bell_id, BellSettings &settings)
 
 	if (_last_bell != bell_id) {
 		_last_bell = bell_id;
+
+		audio_ring();
 		// Serial.print("RING ");
 		// Serial.println(bell_id);
-		ring_tone(settings.bellFrequency, settings.bellDurationMs);
+		// ring_tone(settings.bellFrequency, settings.bellDurationMs);
 	}
 }
 

@@ -47,18 +47,18 @@ void handleGetConfig() {
 void handlePostTest() {
     httpd.sendHeader("Access-Control-Allow-Origin", "*");
 
-	StaticJsonDocument<512> doc;
-	String body = httpd.arg("plain");
-	deserializeJson(doc, body);
-	BellSettings &settings = BellSettings::active();
-	unsigned int freq = settings.bellFrequency;
-	unsigned long duration = settings.bellDurationMs;
-	if (doc.containsKey("bellFrequency")) {
-		freq = doc["bellFrequency"];
-	}
-	if (doc.containsKey("bellDurationMs")) {
-		duration = doc["bellDurationMs"];
-	}
+	// StaticJsonDocument<512> doc;
+	// String body = httpd.arg("plain");
+	// deserializeJson(doc, body);
+	// BellSettings &settings = BellSettings::active();
+	// unsigned int freq = settings.bellFrequency;
+	// unsigned long duration = settings.bellDurationMs;
+	// if (doc.containsKey("bellFrequency")) {
+	// 	freq = doc["bellFrequency"];
+	// }
+	// if (doc.containsKey("bellDurationMs")) {
+	// 	duration = doc["bellDurationMs"];
+	// }
 	// ring_tone(freq, duration);
 	audio_ring();
     httpd.send(200, "application/json", "true");
