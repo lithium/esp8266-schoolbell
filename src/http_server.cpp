@@ -6,6 +6,12 @@
 ESP8266WebServer httpd;
 
 
+void handleGetNow() {
+    httpd.sendHeader("Access-Control-Allow-Origin", "*");
+    NTPClient &client = getNTPClient();
+	httpd.send(200, "application/json", client.getFormattedTime());
+}
+
 void handleGetConfig() {
     httpd.sendHeader("Access-Control-Allow-Origin", "*");
 
@@ -89,8 +95,8 @@ void httpd_setup()
     httpd.serveStatic("/", SPIFFS, "/index.html");
     httpd.on("/config", HTTP_GET, handleGetConfig);
     httpd.on("/config", HTTP_POST, handlePostConfig);
-
     httpd.on("/test", HTTP_POST, handlePostTest);
+    httpd.on("/now", HTTP_GET, handleGetNow);
 
 
     httpd.begin();

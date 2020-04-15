@@ -20,6 +20,8 @@
 <body>
     <p>Hello Schoolbell</p>
 
+    <div id="clock-display"></div>
+
     <div id="settings-form" style="display: none">
       <fieldset>
         <div class="formfield">
@@ -126,17 +128,23 @@
           'useZeroPeriod': $('#enable0').val(),
           'bellSchedule': schedule
         } 
-        var url = `${window.APP_CONFIG.api.baseUrl}/config`
-        $.post(url, JSON.stringify(data))
+        $.post(`${window.APP_CONFIG.api.baseUrl}/config`, JSON.stringify(data))
       }
 
+      function getNow() {
+        $.getJSON(`${window.APP_CONFIG.api.baseUrl}/now`).then((now) => {
+          $('#clock-display').innerHTML = now;
+          setTimeout(() => { getNow() }, 800)
+        })
+      }
 
       $(document).ready(() => {
-        var url = `${window.APP_CONFIG.api.baseUrl}/config`
-        $.getJSON(url).then((settings) => {
+        $.getJSON(`${window.APP_CONFIG.api.baseUrl}/config`).then((settings) => {
           updateSettings(settings);
           $('#settings-form').show()
         })
+
+        getNow();
 
         $('#submit').click(() => {
           saveSettings();

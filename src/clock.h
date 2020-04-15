@@ -9,4 +9,7 @@
 void clock_setup();
 void clock_loop();
 void ring_tone(unsigned int freq, unsigned long duration);
+
+
+NTPClient &getNTPClient();
 #endif
