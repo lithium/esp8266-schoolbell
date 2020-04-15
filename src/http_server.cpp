@@ -2,6 +2,7 @@
 #include <ArduinoJson.h>
 #include "settings.h"
 #include "clock.h"
+#include "audio.h"
 
 ESP8266WebServer httpd;
 
@@ -58,7 +59,8 @@ void handlePostTest() {
 	if (doc.containsKey("bellDurationMs")) {
 		duration = doc["bellDurationMs"];
 	}
-	ring_tone(freq, duration);
+	// ring_tone(freq, duration);
+	audio_ring();
     httpd.send(200, "application/json", "true");
 }
 void handlePostConfig() {

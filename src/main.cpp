@@ -5,6 +5,7 @@
 #include "http_server.h"
 #include "clock.h"
 #include "settings.h"
+#include "audio.h"
 
 
 void wifi_setup()
@@ -73,6 +74,7 @@ void setup()
 
     settings_setup();
     clock_setup();
+    audio_setup();
     httpd_setup();
     Serial.println("setup complete");
 }
@@ -80,6 +82,7 @@ void setup()
 
 void loop() 
 {
+    audio_loop();
     clock_loop();
     httpd_loop();
     ota_loop();
