@@ -32,10 +32,16 @@ void ring_bell(int bell_id, BellSettings &settings)
 void clock_loop()
 {
 	ntpClient.update();
+	int day = ntpClient.getDay();
+
+	if (day == 0 || day == 6) {
+		// skip weekends
+		return;
+	}
 
 	BellSettings &settings = BellSettings::active();
-
 	int now = (ntpClient.getHours()+1)*60 + ntpClient.getMinutes();
+
 	for (int i=0; i < NUM_PERIODS; i++) {
 		if (now == settings.bellSchedule[i].start) {
 			ring_bell(i*2, settings);
