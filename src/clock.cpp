@@ -42,7 +42,8 @@ void clock_loop()
 	BellSettings &settings = BellSettings::active();
 	int now = (ntpClient.getHours()+1)*60 + ntpClient.getMinutes();
 
-	for (int i=0; i < NUM_PERIODS; i++) {
+	int i = settings.useZeroPeriod ? 0 : 1;
+	for (; i < NUM_PERIODS; i++) {
 		if (now == settings.bellSchedule[i].start) {
 			ring_bell(i*2, settings);
 			break;

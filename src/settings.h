@@ -1,7 +1,7 @@
 #ifndef SETTINGS_H_
 #define SETTINGS_H_
 
-#define NUM_PERIODS 6
+#define NUM_PERIODS 7
 
 typedef struct period {
 	int start; // minutes from midnight
@@ -15,6 +15,7 @@ public:
 	long gmtOffsetHours = -8;
 	long ntpIntervalMs = 30*60000;
 	period_t bellSchedule[NUM_PERIODS];
+	bool useZeroPeriod = true;
 
 	static BellSettings &active();
 
@@ -24,7 +25,7 @@ public:
 
 #define EEPROM_ADDR_MAGIC 0
 #define EEPROM_MAGIC_SIZE 1
-#define EEPROM_MAGIC_COOKIE 0b11111001
+#define EEPROM_MAGIC_COOKIE 0b11111010
 
 #define EEPROM_ADDR_SETTINGS EEPROM_ADDR_MAGIC+EEPROM_MAGIC_SIZE
 #define EEPROM_SETTINGS_SIZE sizeof(BellSettings)

@@ -23,34 +23,40 @@
     <div id="settings-form" style="display: none">
       <fieldset>
         <div class="formfield">
-          <label for="start0">Period1</label>
+          <label for="start0">Period 0</label>
           <input type="time" id="start0">
           <input type="time" id="end0">
+          <input type="checkbox" id="enable0"><label for="enable0">Ring Zero Period</label>
         </div>
         <div class="formfield">
-          <label for="start1">Period2</label>
+          <label for="start1">Period1</label>
           <input type="time" id="start1">
           <input type="time" id="end1">
         </div>
         <div class="formfield">
-          <label for="start2">Period3</label>
+          <label for="start2">Period2</label>
           <input type="time" id="start2">
           <input type="time" id="end2">
         </div>
         <div class="formfield">
-          <label for="start3">Period4</label>
+          <label for="start3">Period3</label>
           <input type="time" id="start3">
           <input type="time" id="end3">
         </div>
         <div class="formfield">
-          <label for="start4">Period5</label>
+          <label for="start4">Period4</label>
           <input type="time" id="start4">
           <input type="time" id="end4">
         </div>
         <div class="formfield">
-          <label for="start5">Period6</label>
+          <label for="start5">Period5</label>
           <input type="time" id="start5">
           <input type="time" id="end5">
+        </div>
+        <div class="formfield">
+          <label for="start6">Period6</label>
+          <input type="time" id="start6">
+          <input type="time" id="end6">
         </div>
       </fieldset>
       <fieldset>
@@ -99,6 +105,8 @@
             $(`#start${i}`).val(offsetToTime(settings.bellSchedule[i][0]))
             $(`#end${i}`).val(offsetToTime(settings.bellSchedule[i][1]))
           } 
+
+          $(`#enable0`).prop('checked', settings.useZeroPeriod)
       }
 
       function saveSettings() {
@@ -114,6 +122,7 @@
           'bellDurationMs': $('#bellDurationMs').val(),
           'gmtOffsetHours': $('#gmtOffsetHours').val(),
           'ntpIntervalMs': $('#ntpIntervalMs').val(),
+          'useZeroPeriod': $('#enable0').val(),
           'bellSchedule': schedule
         } 
         var url = `${window.APP_CONFIG.api.baseUrl}/config`

@@ -22,6 +22,7 @@ void handleGetConfig() {
     doc["bellDurationMs"] = settings.bellDurationMs;
     doc["gmtOffsetHours"] = settings.gmtOffsetHours;
     doc["ntpIntervalMs"] = settings.ntpIntervalMs;
+    doc["useZeroPeriod"] = settings.useZeroPeriod;
 
 	String buf;
 	serializeJson(doc, buf);
@@ -47,6 +48,9 @@ void handlePostConfig() {
 	}
 	if (doc.containsKey("ntpIntervalMs")) {
 		settings.ntpIntervalMs = doc["ntpIntervalMs"];
+	}
+	if (doc.containsKey("useZeroPeriod")) {
+		settings.useZeroPeriod = doc["useZeroPeriod"];
 	}
 	if (doc.containsKey("bellSchedule")) {
 		JsonArray schedule = doc["bellSchedule"];
