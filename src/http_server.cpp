@@ -1,6 +1,7 @@
 #include "http_server.h"
 #include <ArduinoJson.h>
 #include "settings.h"
+#include "clock.h"
 
 ESP8266WebServer httpd;
 
@@ -29,6 +30,24 @@ void handleGetConfig() {
 	httpd.send(200, "application/json", buf);
 }
 
+void handlePostTest() {
+    httpd.sendHeader("Access-Control-Allow-Origin", "*");
+
+	StaticJsonDocument<512> doc;
+	String body = httpd.arg("plain");
+	deserializeJson(doc, body);
+	BellSettings &settings = BellSettings::active();
+	unsigned int freq = settings.bellFrequency;
+	unsigned long duration = settings.bellDurationMs;
+	if (doc.containsKey("bellFrequency")) {
+		freq = doc["bellFrequency"];
+	}
+	if (doc.containsKey("bellDurationMs")) {
+		duration = doc["bellDurationMs"];
+	}
+	ring_tone(freq, duration);
+    httpd.send(200, "application/json", "true");
+}
 void handlePostConfig() {
     httpd.sendHeader("Access-Control-Allow-Origin", "*");
 
@@ -70,6 +89,8 @@ void httpd_setup()
     httpd.serveStatic("/", SPIFFS, "/index.html");
     httpd.on("/config", HTTP_GET, handleGetConfig);
     httpd.on("/config", HTTP_POST, handlePostConfig);
+
+    httpd.on("/test", HTTP_POST, handlePostTest);
 
 
     httpd.begin();

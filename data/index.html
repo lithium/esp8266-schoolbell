@@ -68,6 +68,7 @@
           <label for="bellDurationMs">Bell Duration (ms)</label>
           <input type="number" id="bellDurationMs">
         </div>
+        <button type="button" id="testButton">Test</button>
       </fieldset> 
       <fieldset>
         <div class="formfield">
@@ -139,6 +140,14 @@
 
         $('#submit').click(() => {
           saveSettings();
+        })
+
+        $('#testButton').click(() => {
+          var data = {
+            'bellFrequency': $('#bellFrequency').val(),
+            'bellDurationMs': $('#bellDurationMs').val(),
+          }
+          $.post(`${window.APP_CONFIG.api.baseURL}/test`, JSON.stringify(data))
         })
       })
       

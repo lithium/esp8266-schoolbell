@@ -19,14 +19,18 @@ void ring_bell(int bell_id, BellSettings &settings)
 
 	if (_last_bell != bell_id) {
 		_last_bell = bell_id;
-		Serial.print("RING ");
-		Serial.println(bell_id);
-
-		tone(SPEAKER_PIN, settings.bellFrequency, settings.bellDurationMs);
-		digitalWrite(LED_BUILTIN, 0);
-		delay(settings.bellDurationMs);
-		digitalWrite(LED_BUILTIN, 1);
+		// Serial.print("RING ");
+		// Serial.println(bell_id);
+		ring_tone(settings.bellFrequency, settings.bellDurationMs);
 	}
+}
+
+void ring_tone(unsigned int freq, unsigned long duration)
+{
+	tone(SPEAKER_PIN, freq, duration);
+	digitalWrite(LED_BUILTIN, 0);
+	delay(duration);
+	digitalWrite(LED_BUILTIN, 1);
 }
 
 void clock_loop()
