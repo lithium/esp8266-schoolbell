@@ -127,7 +127,7 @@
           // 'bellDurationMs': $('#bellDurationMs').val(),
           'gmtOffsetHours': $('#gmtOffsetHours').val(),
           'ntpIntervalMs': $('#ntpIntervalMs').val(),
-          'useZeroPeriod': $('#enable0').val(),
+          'useZeroPeriod': $('#enable0').prop('checked'),
           'bellSchedule': schedule
         } 
         $.post(`${window.APP_CONFIG.api.baseUrl}/config`, JSON.stringify(data))
