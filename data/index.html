@@ -25,7 +25,7 @@
     <div id="settings-form" style="display: none">
       <fieldset>
         <div class="formfield">
-          <label for="start0">Period 0</label>
+          <label for="start0">Period0</label>
           <input type="time" id="start0">
           <input type="time" id="end0">
           <input type="checkbox" id="enable0"><label for="enable0">Ring Zero Period</label>
@@ -132,9 +132,10 @@
       }
 
       function getNow() {
-        $.getJSON(`${window.APP_CONFIG.api.baseUrl}/now`).then((now) => {
-          $('#clock-display').innerHTML = now;
-          setTimeout(() => { getNow() }, 800)
+        $.getJSON(`${window.APP_CONFIG.api.baseUrl}/now`).then((clock) => {
+          var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+          $('#clock-display').html(`${days[clock.day]} ${clock.time}`);
+          setTimeout(() => { getNow() }, 45000)
         })
       }
 
@@ -155,7 +156,7 @@
             'bellFrequency': $('#bellFrequency').val(),
             'bellDurationMs': $('#bellDurationMs').val(),
           }
-          $.post(`${window.APP_CONFIG.api.baseURL}/test`, JSON.stringify(data))
+          $.post(`${window.APP_CONFIG.api.baseUrl}/test`, JSON.stringify(data))
         })
       })
       

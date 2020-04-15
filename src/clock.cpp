@@ -11,6 +11,9 @@ NTPClient &getNTPClient()
 
 void clock_setup()
 {
+	BellSettings &settings = BellSettings::active();
+	ntpClient.setTimeOffset(settings.gmtOffsetHours*3600);
+	ntpClient.setUpdateInterval(settings.ntpIntervalMs);
 	ntpClient.begin();
 
 	pinMode(LED_BUILTIN, OUTPUT);
@@ -49,7 +52,7 @@ void clock_loop()
 	}
 
 	BellSettings &settings = BellSettings::active();
-	int now = (ntpClient.getHours()+1)*60 + ntpClient.getMinutes();
+	int now = (ntpClient.getHours())*60 + ntpClient.getMinutes();
 
 	int i = settings.useZeroPeriod ? 0 : 1;
 	for (; i < NUM_PERIODS; i++) {

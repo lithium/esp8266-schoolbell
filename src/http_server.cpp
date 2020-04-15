@@ -8,8 +8,15 @@ ESP8266WebServer httpd;
 
 void handleGetNow() {
     httpd.sendHeader("Access-Control-Allow-Origin", "*");
+	StaticJsonDocument<256> doc;
     NTPClient &client = getNTPClient();
-	httpd.send(200, "application/json", client.getFormattedTime());
+
+	doc["time"] = client.getFormattedTime();
+	doc["day"] = client.getDay();
+
+	String buf;
+	serializeJson(doc, buf);
+	httpd.send(200, "application/json", buf);
 }
 
 void handleGetConfig() {
